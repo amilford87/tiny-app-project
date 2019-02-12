@@ -15,6 +15,10 @@ var urlDatabase = {
       res.json(urlDatabase);
   });
 
+  app.get("/hello", (req, res) => {
+      res.send("<html><body>Hello <b>World</b></body></html>")
+  });
+
   app.listen(PORT, () => {
       console.log(`Example app listening on port ${PORT}!`);
   });
