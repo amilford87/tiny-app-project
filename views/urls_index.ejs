@@ -10,14 +10,17 @@
     </head>
 
     <body style="font-size:20px; padding:50px;">
-    
-        <h2>URLs</h2>
+        <header>
+            <% include ./partials/_header %>
+        </header>
+        <a href="#">Create New TinyURL</a> 
+        <p>
+        <h2>My URLs</h2>
        <ul>
         <% for (shortUrl in urls) { %>
-        <li><%= shortUrl %> - <%= urls[shortUrl] %></li>
+        <li><b><%= shortUrl %></b>: <%= urls[shortUrl] %></li>
        <% } %>
        </ul>
-       <a href="#">New Link Placeholder</a> 
 
     </body>
 </html>

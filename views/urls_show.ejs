@@ -10,11 +10,14 @@
     </head>
 
     <body style="font-size:20px; padding:50px;">
-    
-        <h2>URL</h2>
-       <%= shortURL %> - <%= longURL %>
+        <header>
+            <% include ./partials/_header %>
+        </header>
+        <a href="#">Create New TinyURL</a> 
+        <p>
+        <h3><b>TinyURL for <%= longURL %></b></h3>
+       <%= shortURL %>
        <br>
-       <a href="#">New Link Placeholder</a> 
 
     </body>
 </html>
