@@ -41,8 +41,8 @@ var urlDatabase = {
         res.render("urls_show", templateVars);
     });
 
-    app.post("/urls/show", (req, res) => {
-        let updatedLongUrl = req.params;
+    app.post("/urls/:shortURL", (req, res) => {
+       urlDatabase[req.params.shortURL] = req.body.longURLUpdate;
         res.redirect("/urls/");
     });
     

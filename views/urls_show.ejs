@@ -13,8 +13,8 @@
 
         <h1>ShortURL: <b><%= shortURL %></b></h1>
         <div>
-        <form class="form-inline" action="/urls/show" method="POST">
-        <input class="form-control" type="text" name="longURLUpdate" placeholder="<%= longURL %>" style="width: 300px; margin: 1em; display: inline"><button type="submit" class="btn btn-primary">Update</button>
+        <form class="form-inline" action="/urls/<%= shortURL %>" method="POST">
+        <input class="form-control" type="text" name="longURLUpdate" value="<%= longURL %>" style="width: 300px; font-weight: bold; margin: 1em; display: inline"><button type="submit" class="btn btn-primary">Update</button>
         </form>
         </div>
     </body>
