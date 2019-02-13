@@ -52,6 +52,11 @@ var urlDatabase = {
         res.redirect("/urls/" + tinyUrl, 302);
         }
     });
+
+    app.post("/urls/:shortURL/delete/", (req, res) => {
+        delete urlDatabase[req.params.shortURL];
+        res.redirect("/urls/");
+    });
     
     app.get("/u/:shortURL", (req, res) => {
         const longURL = urlDatabase[req.params.shortURL];

@@ -18,8 +18,12 @@
         <h2>My URLs</h2>
        <ul>
         <% for (shortUrl in urls) { %>
-        <li><b><%= shortUrl %></b>: <%= urls[shortUrl] %></li>
-       <% } %>
+            <li>
+                <b><%= shortUrl %></b> -> <%= urls[shortUrl] %>
+                <p style="padding-right: 5px;"><button type="submit" form="deleteform" value=Submit><form method="POST" action="/urls/<%= shortUrl %>/delete" id="deleteform">Delete</form></button></p>
+                <% }; %>
+            </li>
+       
        </ul>
 
     </body>
