@@ -40,6 +40,11 @@ var urlDatabase = {
         let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
         res.render("urls_show", templateVars);
     });
+
+    app.post("/urls/show", (req, res) => {
+        let updatedLongUrl = req.params;
+        res.redirect("/urls/");
+    });
     
     app.post("/urls", (req, res) => {
         if (req.body.longURL.slice(0,4) !== "http") {
@@ -59,7 +64,7 @@ var urlDatabase = {
     });
     
     app.get("/u/:shortURL", (req, res) => {
-        const longURL = urlDatabase[req.params.shortURL];
+        let longURL = urlDatabase[req.params.shortURL];
         res.redirect(longURL);
       });
 
