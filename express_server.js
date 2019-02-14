@@ -1,16 +1,16 @@
 var express = require("express");
-var app = express();
-var PORT = 8080;
-
 const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
+const bcrypt = require('bcrypt');
 var cookieParser = require("cookie-parser");
+var PORT = 8080;
+var app = express();
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser('random string of text'));
 
 
-//Random string generator adapted from https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+//Random string generator
 const randomString = () => {
-    return Math.random().toString(36).substr(2, 7);
+    return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 };
 
 
@@ -41,7 +41,7 @@ function userEmailLookup (email) {
 //A function to check the password a user has put in against the password stored in 'users'
 function userPasswordLookup (password) {
         for (var allUsers in users) {
-            if (users[allUsers].password === password){
+            if (bcrypt.compareSync(password, users[allUsers].password)){
              return true;}
             } 
             return false;  
@@ -50,7 +50,7 @@ function userPasswordLookup (password) {
 //A function that upon email and password validation, retrieves the user's ID for cookie purposes
 function retrieveUser (email, password, users) {
     for (var allUsers in users) {
-        if (users[allUsers].email === email && users[allUsers].password === password){
+        if (users[allUsers].email === email && bcrypt.compareSync(password, users[allUsers].password)){
             var useridentification = users[allUsers].id;
             return useridentification;
         }
@@ -77,17 +77,7 @@ var urlDatabase = {
             userUrls[shortURL] = urlDatabase[shortURL].longURL;
         }
       } return userUrls;
-  } 
-
-  let testUrls = urlsForUser("xfftpVd");
-
-console.log(testUrls);
-console.log(Object.keys(testUrls));
-
-for (var shorturl in testUrls) {
-    var longurl = testUrls[shorturl].longURL;
-    console.log(longurl);
-}
+  }
 
 
 
@@ -106,8 +96,6 @@ for (var shorturl in testUrls) {
         "user": users[user],   
         urls: userUrls };
       res.render("urls_index", templateVars);
-      console.log(user);
-      console.log(userUrls);
   });
   
   
@@ -152,12 +140,10 @@ for (var shorturl in testUrls) {
         if (req.body.longURL.slice(0,4) !== "http") {
             var newLongUrl = "http://"+req.body.longURL;
             urlDatabase[urlRandomString] = { longURL: newLongUrl, userID: req.cookies["user_id"] };
-            console.log(urlDatabase);
             res.redirect("/urls/" + urlRandomString, 302);
         } else {
         
         urlDatabase[urlRandomString] = { longURL: req.body.longURL, userID: req.cookies["user_id"] };
-        console.log(urlDatabase);
         res.redirect("/urls/" + urlRandomString, 302);
         }
     });
@@ -196,7 +182,7 @@ for (var shorturl in testUrls) {
     });
 
     app.post("/register", (req, res) => {
-        let randomID = generateRandomString();
+        let randomID = randomString();
         if (!req.body.email || !req.body.password) {
             res.status(400).end('no input');
         } else if (req.body.email) {
@@ -207,7 +193,7 @@ for (var shorturl in testUrls) {
         users[randomID] = {
             id: randomID,
             email: req.body.email,
-            password: req.body.password
+            password: bcrypt.hashSync(req.body.password, 10)
         }; 
     }
         res.cookie("user_id", randomID);
