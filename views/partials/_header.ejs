@@ -1,14 +1,14 @@
 <h1><b>TinyApp</b></h1>
 <p>
     <% if(user){ %>
+        <a href="/urls/">URLs</a> | <a href="/urls/new/">Create New TinyURL</a>
         <p>Logged in as: <b><%= user.email %></b></p>
         <form class="form-inline" action="/logout" method="POST">
             <div class="form-group mb-2"></div>
                 <button type="submit" class="btn btn-primary">Logout</button>
             </div>
         </form>
-    
+        <p></p>
     <% } else{ %> 
-        <p>Please <a href="/login">Login</a></p>
-        <p>New User? <a href="/register">Register Here</a></p>
+        <p><a href="/login">Login</a> | <a href="/register">Register</a></p>
     <% } %>

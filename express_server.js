@@ -7,13 +7,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 var cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
+
+//Random string generator adapted from https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
 function generateRandomString() {
     return Math.random().toString(36).substr(2, 7);
 }
 
-//Random string generator adapted from https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-
-let randomString = generateRandomString();
+const randomString = generateRandomString();
 
 const users = {
     "userRandomID": {
