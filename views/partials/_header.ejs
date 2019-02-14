@@ -1,14 +1,14 @@
 <h1><b>TinyApp</b></h1>
 <p>
-    <% if(username === undefined){ %>
-<form class="form-inline" action="/login" method="POST">Username
-    <input class="form-control" type="text" placeholder="username" name="username" style="width: 300px; margin: 1em">
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-<% }else{ %>
-<p><h4><b><%= username %></h4></b>
-    <form class="form-inline" action="/logout" method="POST">
-    <button type="submit" class="btn btn-primary">Logout</button>
-</form>
-</p>
-<% } %>
+    <% if(user){ %>
+        <p>Logged in as: <b><%= user.email %></b></p>
+        <form class="form-inline" action="/logout" method="POST">
+            <div class="form-group mb-2"></div>
+                <button type="submit" class="btn btn-primary">Logout</button>
+            </div>
+        </form>
+    
+    <% } else{ %> 
+        <p>Please <a href="/login">Login</a></p>
+        <p>New User? <a href="/register">Register Here</a></p>
+    <% } %>
