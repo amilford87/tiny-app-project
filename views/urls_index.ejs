@@ -16,19 +16,23 @@
         <a href="/urls/new">Create New TinyURL</a> 
         <p>
         <h2>My URLs</h2>
-        <table>
-        <tr><% for (shortUrl in urls) { %>
-            
-               <td padding: 5px> <b><%= shortUrl %></b> -> <%= urls[shortUrl] %> </td>
-               <td padding: 5px> <a href ="/urls/<%= shortUrl %>">Edit</a> </td>
-               <td padding: 5px> <form method="POST" action="/urls/<%= shortUrl %>/delete" id="deleteform" style="display:inline">
-                    <button type="submit" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span> Delete</button>
-                </form></td></tr>
-  
-                <p>
-                <% }; %>
-            </p>
-        
-    </table>
+        <% for (shortUrl in urls) { %>
+            <table>
+                <style type="text/css">
+                table{
+                    border-collapse: separate;
+                    border-spacing: 10px;}
+                    </style>
+                    <tbody>
+                        <th> 
+                            <td><%= shortUrl %></b> -> <%= urls[shortUrl] %> </td>
+                            <td><a href ="/urls/<%= shortUrl %>">Edit</a> </td>
+                            <td><form method="POST" action="/urls/<%= shortUrl %>/delete" id="deleteform" style="display:inline">
+                                <button type="submit" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                            </form></td></th></tbody>
+                            <p>
+                                <% }; %>
+                            </p>
+            </table>
     </body>
 </html>

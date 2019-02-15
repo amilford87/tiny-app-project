@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <% include ./partials/_header %>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-file=no">
-        <% include ./partials/_header %>
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <title>TinyApp</title>
     </head>
 
     <body style="font-size:20px; padding:50px;">
-        <h1>ShortURL: <b><%= url %></b></h1>
+       
+        <h1>ShortURL: <b><%= shortURL %></b></h1>
         <div>
         <form class="form-inline" action="/urls/<%= shortURL %>/update" method="POST">
-        <input class="form-control" type="text" name="longURLUpdate" value="<%= shortURL[longURL] %>" style="width: 300px; font-weight: bold; margin: 1em; display: inline"><button type="submit" class="btn btn-primary">Update</button>
+        <input class="form-control" type="text" name="longURLUpdate" value="<%= longURL %>" style="width: 300px; font-weight: bold; margin: 1em; display: inline"><button type="submit" class="btn btn-primary">Update</button>
         </form>
         </div>
     </body>
