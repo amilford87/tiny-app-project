@@ -26,17 +26,7 @@ const randomString = () => {
 
 
 //Our database of users
-const users = {  "userRandomID": {
-    id: "userRandomID", 
-    email: "user@example.com", 
-    password: "purple-monkey-dinosaur"
-  },
- "user2RandomID": {
-    id: "user2RandomID", 
-    email: "user2@example.com", 
-    password: "dishwasher-funk"
-  }
-};
+const users = { };
 
 //A global function for looking up whether the email a user has put in is stored in 'users'
 function userEmailLookup (email) {
@@ -67,10 +57,7 @@ function retrieveUser (email, password, users) {
 }
 
 //The database for our URLS
-var urlDatabase = { 
-    b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
-    i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" }
-};
+var urlDatabase = { };
 
 //a function to look up a user in the urlDatabase
 function urlsForUser(id) {
@@ -124,7 +111,7 @@ app.post("/login", (req, res) => {
 //For our Logout action
 app.post("/logout", (req, res) => {
     delete req.session.user_id;
-    res.redirect("/urls/");
+    res.redirect("/login");
 });
 
 //For our Register page
@@ -140,12 +127,14 @@ app.get("/register", (req, res) => {
     
 app.post("/register", (req, res) => {
     let randomID = randomString();
+//Checking if email and password are filled out and the email isn't already registered
     if (!req.body.email || !req.body.password) {
         res.status(400).end('no input');
     } else if (req.body.email) {
         if (userEmailLookup(req.body.email)){
             res.status(400).end('already registered');
         }
+//if email isn't already registered then create a new user        
         users[randomID] = {
             id: randomID,
             email: req.body.email,
@@ -163,6 +152,7 @@ app.get("/urls.json", (req, res) => {
     
 app.get("/urls", (req, res) => {
     let user = req.session.user_id;
+//User gets sent to an error page telling them to login if they don't have a user ID    
     if (req.session.user_id === undefined){
         res.status(400).end('please login');
     }
@@ -175,6 +165,7 @@ app.get("/urls", (req, res) => {
 
 app.post("/urls", (req, res) => {
     var urlRandomString = randomString();
+//If user does not include http:// when making a tinyUrl place it there for them
     if (req.body.longURL.slice(0,4) !== "http") {
         var newLongUrl = "http://"+req.body.longURL;
         urlDatabase[urlRandomString] = { longURL: newLongUrl, userID: req.session.user_id };
@@ -188,8 +179,9 @@ app.post("/urls", (req, res) => {
 //For a new URL  
 app.get("/urls/new", (req, res) => {
     let user = req.session.user_id;
+//If user isn't logged in redirect them to the login page
     if (req.session.user_id === undefined){
-        res.redirect("/login");
+        res.status(401).redirect("/login");
     }
     let templateVars = { 
         "user": users[user] };
@@ -199,6 +191,7 @@ app.get("/urls/new", (req, res) => {
 //For the short URL page
 app.get("/urls/:shortURL", (req, res) => {
     let user = req.session.user_id;
+//If user is logged show the URL page otherwise redirect them to the login
     if (user === urlDatabase[req.params.shortURL].userID){
         let templateVars = { 
             "user": users[user],
@@ -208,29 +201,31 @@ app.get("/urls/:shortURL", (req, res) => {
         res.render("urls_show", templateVars);
         return;
     }
-    res.redirect("/login");
+    res.status(401).redirect("/login");
 });
 
 //to update a short URL
 app.post("/urls/:shortURL/update", (req, res) => {
     let user = req.session.user_id;
+//If user is logged in send them to the short URL page, otherwise redirect them to the login
     if (user === urlDatabase[req.params.shortURL].userID) { 
         urlDatabase[req.params.shortURL] = { "longURL": req.body.longURLUpdate, "userID": user };
         res.redirect("/urls");
     }
     else {
-        res.redirect("/login");
+        res.status(401).redirect("/login");
     }
 });
     
 //to delete a URL
 app.get("/urls/:shortURL/delete/", (req, res) => {
     let user = req.session.user_id;
+//only let the user delete a URL if their id matches that of the URL.
     if (user === urlDatabase[req.params.shortURL].userID){
         delete urlDatabase[req.params.shortURL];
         res.redirect("/urls/");
     }
-    res.redirect("/login");
+    res.status(401).redirect("/login");
 });
 
 app.post("/urls/:shortURL/delete/", (req, res) => {
@@ -239,7 +234,7 @@ app.post("/urls/:shortURL/delete/", (req, res) => {
         delete urlDatabase[req.params.shortURL];
         res.redirect("/urls/");
     }
-    res.redirect("/login");
+    res.status(401).redirect("/login");
 });
 
 
